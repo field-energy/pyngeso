@@ -20,7 +20,7 @@ def test_day_ahead_historic_forecast():
     assert isinstance(records, list)
     assert len(records) > 0
     unique_target_dates = set([record.get("TARGETDATE") for record in records])
-    assert len(unique_target_dates) == 1
+    assert len(unique_target_dates) == 2
 
 
 @pytest.mark.vcr
@@ -52,4 +52,4 @@ def test_2day_ahead_historic_forecast():
     assert isinstance(records, list)
     assert len(records) > 0
     unique_target_dates = set([record.get("TARGETDATE") for record in records])
-    assert len(unique_target_dates) == 1
+    assert len(unique_target_dates) == 2
