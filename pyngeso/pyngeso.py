@@ -1,6 +1,6 @@
 import logging
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import re
 
@@ -91,6 +91,9 @@ class NgEso:
             raise ValueError("At least one of {start_date,end_date} should be provided")
         if all(dates_provided):
             self.validate_date_range(start_date, end_date)
+        # add 1 day to end_date as casting as timestamp rounds it down to midnight
+        if end_date:
+            end_date = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
 
         date_range_map = {
             (True, False): f"where \"{date_col}\" > '{start_date}'::timestamp",
