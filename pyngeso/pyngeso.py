@@ -91,17 +91,14 @@ class NgEso:
             raise ValueError("At least one of {start_date,end_date} should be provided")
         if all(dates_provided):
             self.validate_date_range(start_date, end_date)
-        # add 1 day to end_date as casting as timestamp rounds it down to midnight
-        if end_date:
-            end_date = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
 
         date_range_map = {
-            (True, False): f"where \"{date_col}\" > '{start_date}'::timestamp",
+            (True, False): f"where \"{date_col}\" >= '{start_date}'::timestamp",
             (False, True): f"where \"{date_col}\" < '{end_date}'::timestamp",
             (
                 True,
                 True,
-            ): f"where \"{date_col}\" between '{start_date}'::timestamp "
+            ): f"where \"{date_col}\" BETWEEN '{start_date}'::timestamp "
                f"and '{end_date}'::timestamp",
         }
         date_filter_sql = date_range_map.get(dates_provided)
