@@ -16,5 +16,13 @@ resource_ids: Dict[str, Dict[str, str]] = {
     "2day-ahead-demand-forecast": {
         "id": "cda26f27-4bb6-4632-9fb5-2d029ca605e1",
         "url": "https://data.nationalgrideso.com/demand/2-day-ahead-demand-forecast/r/2_day_ahead_demand_forecast"
+    },
+    "historic-day-ahead-wind-forecast": {
+        "id": "7524ec65-f782-4258-aaf8-5b926c17b966",
+        "url": "https://data.nationalgrideso.com/demand/day-ahead-wind-forecast/r/historic_day_ahead_wind_forecasts"
+    },
+    "day-ahead-wind-forecast": {
+        "id": "b2f03146-f05d-4824-a663-3a4f36090c71",
+        "url": "https://data.nationalgrideso.com/demand/day-ahead-wind-forecast/r/day_ahead_wind_forecast"
     }
 }

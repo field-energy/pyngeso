@@ -16,7 +16,7 @@ from pyngeso import NgEso
 resource = "historic-day-ahead-demand-forecast"
 date_col = "TARGETDATE"
 start_date = "2018-01-01"
-end_date = "2018-01-02"
+end_date = "2018-01-01"
 
 client = NgEso(resource)
 # returns content of response
@@ -29,3 +29,5 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 * `day-ahead-demand-forecast`
 * `historic-2day-ahead-demand-forecast`
 * `2day-ahead-demand-forecast`
+* `historic-day-ahead-wind-forecast`
+* `day-ahead-wind-forecast`
