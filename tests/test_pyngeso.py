@@ -53,3 +53,20 @@ def test_2day_ahead_historic_forecast():
     assert len(records) > 0
     unique_target_dates = set([record.get("TARGETDATE") for record in records])
     assert len(unique_target_dates) == 1
+
+
+@pytest.mark.vcr
+def test_historic_day_ahead_wind_forecast():
+    date_col = "Date"
+    start_date = "2018-04-17"
+    end_date = "2018-04-17"
+    client = NgEso("historic-day-ahead-wind-forecast")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
