@@ -25,9 +25,13 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 
 ## Tested reports
 
+### Queryable via NG's api
 * `historic-day-ahead-demand-forecast`
 * `day-ahead-demand-forecast`
 * `historic-2day-ahead-demand-forecast`
 * `2day-ahead-demand-forecast`
 * `historic-day-ahead-wind-forecast`
 * `day-ahead-wind-forecast`
+
+### Download of files
+* `historic-generation-mix`

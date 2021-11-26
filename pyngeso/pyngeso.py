@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, List
+from typing import Optional, List, Literal
 from datetime import datetime, timedelta
 import json
 import re
@@ -7,21 +7,42 @@ import re
 import requests
 
 from .configure_logging import setup_logger
-from .resources import resource_ids
+from .resources import api_resource_ids, file_resource_ids
 from .exceptions import UnsuccessfulRequest
 
 logger = setup_logger(logging.getLogger("PyNgEso"))
 
 
 class NgEso:
+    """
+    A class for fetching data from the National Grid ESO data portal.
+
+    Args:
+        resource_id (str): id for the resource when using the ESO API functionality
+        resource (str): name of the resource when using the ESO API functionality
+    Returns:
+
+    """
     def __init__(
             self,
             resource: str,
-            dataset: Optional[str] = None
+            backend: Literal['api', 'file'] = "api"
     ):
         self.resource = resource
-        self.dataset = dataset
-        self.resource_id = resource_ids.get(resource).get("id")
+        self.backend = backend
+
+        self.resource_id, self.dataset_id, self.filename = self.set_resource_info()
+
+    def set_resource_info(self) -> (str, str, str):
+        dataset_id = None
+        filename = None
+        if self.backend == "api":
+            resource_id = api_resource_ids.get(self.resource).get("id")
+        else:
+            dataset_id = file_resource_ids.get(self.resource).get("dataset_id")
+            resource_id = file_resource_ids.get(self.resource).get("resource_id")
+            filename = file_resource_ids.get(self.resource).get("filename")
+        return resource_id, dataset_id, filename
 
     def query(
         self,
@@ -120,18 +141,21 @@ class NgEso:
             end_date >= start_date
         ), "end_date should be the same of greater than start_date"
 
-    @staticmethod
-    def _check_for_errors(r: requests.Response) -> None:
+    def _check_for_errors(self, r: requests.Response) -> None:
         """Inspect the request response and the metadata in xml"""
         # http response errors
-        status_code = r.status_code
-        if status_code != 200 or r.content is None:
-            raise UnsuccessfulRequest(f"status_code={status_code}:{r.content}")
+        self._check_request_errors(r)
 
         # inspect response body
         rb: dict = json.loads(r.content)
         if not rb.get("success"):
             logger.error(f"Request failed: {rb.get('error')}")
+
+    @staticmethod
+    def _check_request_errors(r: requests.Response) -> None:
+        status_code = r.status_code
+        if status_code != 200 or r.content is None:
+            raise UnsuccessfulRequest(f"status_code={status_code}:{r.content}")
 
     @staticmethod
     def _missing_data(r: requests.Response) -> None:
@@ -144,3 +168,13 @@ class NgEso:
         query = rb.get("query")
         if not records:
             logger.warning(f"{query}: No data found")
+
+    def download_file(self) -> bytes:
+        url = (
+            f"https://data.nationalgrideso.com/backend/dataset/{self.dataset_id}/"
+            f"resource/{self.resource_id}/download/{self.filename}"
+        )
+        r = requests.get(url)
+        self._check_request_errors(r)
+
+        return r.content

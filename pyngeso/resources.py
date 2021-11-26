@@ -1,6 +1,6 @@
 from typing import Dict
 
-resource_ids: Dict[str, Dict[str, str]] = {
+api_resource_ids: Dict[str, Dict[str, str]] = {
     "historic-day-ahead-demand-forecast": {
         "id": "9847e7bb-986e-49be-8138-717b25933fbb",
         "url": "https://data.nationalgrideso.com/demand/1-day-ahead-demand-forecast/r/historic_day_ahead_demand_forecasts"
@@ -24,5 +24,14 @@ resource_ids: Dict[str, Dict[str, str]] = {
     "day-ahead-wind-forecast": {
         "id": "b2f03146-f05d-4824-a663-3a4f36090c71",
         "url": "https://data.nationalgrideso.com/demand/day-ahead-wind-forecast/r/day_ahead_wind_forecast"
+    }
+}
+
+file_resource_ids: Dict[str, Dict[str, str]] = {
+    "historic-generation-mix": {
+        "dataset_id": "88313ae5-94e4-4ddc-a790-593554d8c6b9",
+        "resource_id": "f93d1835-75bc-43e5-84ad-12472b180a98",
+        "filename": "df_fuel_ckan.csv",
+        "url": "https://data.nationalgrideso.com/carbon-intensity1/historic-generation-mix"
     }
 }

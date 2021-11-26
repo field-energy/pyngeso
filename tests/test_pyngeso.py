@@ -1,5 +1,6 @@
 import logging
 import json
+import csv
 
 import pytest
 
@@ -70,3 +71,22 @@ def test_historic_day_ahead_wind_forecast():
     assert len(records) > 0
     unique_target_dates = set([record.get(date_col) for record in records])
     assert len(unique_target_dates) == 1
+
+
+@pytest.mark.vcr
+def test_historic_generation_mix():
+    client = NgEso("historic-generation-mix", "file")
+    r = client.download_file()
+    # test response type
+    assert isinstance(r, bytes)
+
+    # test bytes -> csv
+    decoded_content = r.decode('utf-8')
+    c = csv.reader(decoded_content.splitlines(), delimiter=',')
+    headers_row = next(c)
+    first_row = next(c)
+
+    assert "DATETIME" in headers_row
+    assert "2009-01-01 00:00:00" in first_row
+    assert len(headers_row) == len(first_row)
+
