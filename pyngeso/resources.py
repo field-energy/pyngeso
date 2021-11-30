@@ -24,6 +24,10 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
     "day-ahead-wind-forecast": {
         "id": "b2f03146-f05d-4824-a663-3a4f36090c71",
         "url": "https://data.nationalgrideso.com/demand/day-ahead-wind-forecast/r/day_ahead_wind_forecast"
+    },
+    "demand-data-update": {
+        "id": "177f6fa4-ae49-4182-81ea-0c6b35f26ca6",
+        "url": "https://data.nationalgrideso.com/demand/daily-demand-update"
     }
 }
 
