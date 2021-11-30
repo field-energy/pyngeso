@@ -90,3 +90,40 @@ def test_historic_generation_mix():
     assert "2009-01-01 00:00:00" in first_row
     assert len(headers_row) == len(first_row)
 
+
+@pytest.mark.vcr
+def test_demand_data_update():
+    date_col = "SETTLEMENT_DATE"
+    start_date = "2021-10-01"
+    end_date = "2021-10-01"
+    client = NgEso("demand-data-update")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+    assert len(records) == 48
+
+
+@pytest.mark.vcr
+def test_demand_data_update_with_filter():
+    date_col = "SETTLEMENT_DATE"
+    start_date = "2021-10-01"
+    end_date = "2021-10-01"
+    filter_condition = "\"FORECAST_ACTUAL_INDICATOR\" = 'A'"
+    client = NgEso("demand-data-update")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
+                     filters=[filter_condition])
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+    assert len(records) == 48
