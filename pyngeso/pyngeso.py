@@ -1,6 +1,6 @@
 import logging
 from typing import Optional, List, Literal
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
 import re
 
@@ -50,11 +50,12 @@ class NgEso:
         date_col: Optional[str] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
+        filters: Optional[List[str]] = None,
         limit: Optional[int] = None,
     ) -> bytes:
 
         url = f"https://data.nationalgrideso.com/api/3/action/datastore_search_sql"
-        sql = self.construct_sql(fields, date_col, start_date, end_date, limit)
+        sql = self.construct_sql(fields, date_col, start_date, end_date, filters, limit)
         params = {"sql": sql}
 
         logger.debug(f"Querying {self.resource}: {sql}")
@@ -70,27 +71,36 @@ class NgEso:
         date_col: Optional[str] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
+        filters: Optional[List[str]] = None,
         limit: Optional[int] = None,
     ) -> str:
         fields_sql = "*"
         date_filter_sql = ""
+        filter_sql = ""
         limits_sql = ""
 
         if fields:
             # double quote all fields
             fields_sql = ", ".join([f'"{i}"' for i in fields])
 
-        if date_col:
+        date_filtering = date_col is not None
+        if date_filtering:
             date_filter_sql = self.construct_date_range(date_col, start_date, end_date)
+
+        if filters:
+            filter_sql = self.construct_filter_sql(filters, date_filtering)
 
         if limit:
             limits_sql = f"limit {limit}"
 
-        sql = (
-            f"select {fields_sql} "
-            f"from \"{self.resource_id}\" "
-            f"{date_filter_sql} "
-            f"{limits_sql}"
+        sql = " ".join([
+            "select",
+            fields_sql,
+            "from",
+            f'"{self.resource_id}"',
+            date_filter_sql,
+            filter_sql,
+            limits_sql]
         )
 
         return sql
@@ -125,6 +135,15 @@ class NgEso:
         date_filter_sql = date_range_map.get(dates_provided)
 
         return date_filter_sql
+
+    @staticmethod
+    def construct_filter_sql(filters: List[str], date_filtering: bool) -> str:
+        cond_join = " and "
+        filters_sql = cond_join.join(filters)
+        # if filtering by date "WHERE' clause is already added
+        if date_filtering:
+            return "and " + filters_sql
+        return "where " + filters_sql
 
     @staticmethod
     def validate_date_fmt(date_: str) -> None:
