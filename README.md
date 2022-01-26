@@ -33,6 +33,7 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 * `historic-day-ahead-wind-forecast`
 * `day-ahead-wind-forecast`
 * `demand-data-update`
+* `dc-results-summary`
 
 ### Download of files
 * `historic-generation-mix`
