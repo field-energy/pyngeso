@@ -28,6 +28,10 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
     "demand-data-update": {
         "id": "177f6fa4-ae49-4182-81ea-0c6b35f26ca6",
         "url": "https://data.nationalgrideso.com/demand/daily-demand-update"
+    },
+    "dc-results-summary": {
+        "id": "888e5029-f786-41d2-bc15-cbfd1d285e96",
+        "url": "https://data.nationalgrideso.com/ancillary-services/dynamic-containment-data/r/dc_results_summary_master_data_2021-2022"
     }
 }
 
