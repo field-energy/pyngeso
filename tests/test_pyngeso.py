@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import json
 import csv
@@ -147,3 +148,40 @@ def test_dc_results_summary():
     unique_target_dates = set([record.get(date_col) for record in records])
     assert len(unique_target_dates) == 1
     assert len(records) == 6
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "month, year",
+    [
+        ("jan", 2022),
+        ("jan", 2021),
+        ("feb", 2021),
+        ("mar", 2021),
+        ("apr", 2021),
+        ("may", 2021),
+        ("jun", 2021),
+        ("jul", 2021),
+        ("aug", 2021),
+        ("sep", 2021),
+        ("oct", 2021),
+        ("nov", 2021),
+        ("dec", 2021),
+    ],
+)
+def test_historic_frequency_data(month: str, year: int):
+    date_col = "dtm"
+    start_date = datetime.strptime(f"{month} {year}", "%b %Y").strftime("%Y-%m-%d")
+    client = NgEso(f"historic-frequency-data-{month}{str(year)[-2:]}")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=start_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+    assert len(records) == 1
+    fetched_year = int(records[0].get(date_col)[:4])
+    assert fetched_year == year
