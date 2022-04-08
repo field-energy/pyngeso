@@ -82,7 +82,7 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2010"
     },
     "historic-demand-data-2009": {
-        "id": "18c69c42-f20d-46f0-84e9-e279045befc6",
+        "id": "ed8a37cb-65ac-4581-8dbc-a3130780da3",
         "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2009"
     },
     "dc-results-summary": {
