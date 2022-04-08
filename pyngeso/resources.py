@@ -94,7 +94,7 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "url": "https://data.nationalgrideso.com/system/system-frequency-data/r/january_2022_-_historic_frequency_data"
     },
     "historic-frequency-data-dec21": {
-        "id": "ed8a37cb-65ac-4581-8dbc-a3130780da3a",
+        "id": "afe9895c-5937-4e78-8949-f0f026643666",
         "url": "https://data.nationalgrideso.com/system/system-frequency-data/r/december_2021_-_historic_frequency_data"
     },
     "historic-frequency-data-nov21": {
