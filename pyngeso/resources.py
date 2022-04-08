@@ -29,6 +29,62 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "id": "177f6fa4-ae49-4182-81ea-0c6b35f26ca6",
         "url": "https://data.nationalgrideso.com/demand/daily-demand-update"
     },
+    "historic-demand-data-2022": {
+        "id": "bb44a1b5-75b1-4db2-8491-257f23385006",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2022"
+    },
+    "historic-demand-data-2021": {
+        "id": "18c69c42-f20d-46f0-84e9-e279045befc6",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2021"
+    },
+    "historic-demand-data-2020": {
+        "id": "33ba6857-2a55-479f-9308-e5c4c53d4381",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2020"
+    },
+    "historic-demand-data-2019": {
+        "id": "dd9de980-d724-415a-b344-d8ae11321432",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2019"
+    },
+    "historic-demand-data-2018": {
+        "id": "fcb12133-0db0-4f27-a4a5-1669fd9f6d33",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2018"
+    },
+    "historic-demand-data-2017": {
+        "id": "2f0f75b8-39c5-46ff-a914-ae38088ed022",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2017"
+    },
+    "historic-demand-data-2016": {
+        "id": "3bb75a28-ab44-4a0b-9b1c-9be9715d3c44",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2016"
+    },
+    "historic-demand-data-2015": {
+        "id": "cc505e45-65ae-4819-9b90-1fbb06880293",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2015"
+    },
+    "historic-demand-data-2014": {
+        "id": "b9005225-49d3-40d1-921c-03ee2d83a2ff",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2014"
+    },
+    "historic-demand-data-2013": {
+        "id": "2ff7aaff-8b42-4c1b-b234-9446573a1e27",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2013"
+    },
+    "historic-demand-data-2012": {
+        "id": "4bf713a2-ea0c-44d3-a09a-63fc6a634b00",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2012"
+    },
+    "historic-demand-data-2011": {
+        "id": "01522076-2691-4140-bfb8-c62284752efd",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2011"
+    },
+    "historic-demand-data-2010": {
+        "id": "b3eae4a5-8c3c-4df1-b9de-7db243ac3a09",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2010"
+    },
+    "historic-demand-data-2009": {
+        "id": "18c69c42-f20d-46f0-84e9-e279045befc6",
+        "url": "https://data.nationalgrideso.com/demand/historic-demand-data/r/historic_demand_data_2009"
+    },
     "dc-results-summary": {
         "id": "888e5029-f786-41d2-bc15-cbfd1d285e96",
         "url": "https://data.nationalgrideso.com/ancillary-services/dynamic-containment-data/r/dc_results_summary_master_data_2021-2022"
@@ -38,7 +94,7 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "url": "https://data.nationalgrideso.com/system/system-frequency-data/r/january_2022_-_historic_frequency_data"
     },
     "historic-frequency-data-dec21": {
-        "id": "afe9895c-5937-4e78-8949-f0f026643666",
+        "id": "ed8a37cb-65ac-4581-8dbc-a3130780da3a",
         "url": "https://data.nationalgrideso.com/system/system-frequency-data/r/december_2021_-_historic_frequency_data"
     },
     "historic-frequency-data-nov21": {
