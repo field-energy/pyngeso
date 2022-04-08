@@ -220,6 +220,6 @@ def test_historic_demand_data(year: int):
     assert len(records) > 0
     unique_target_dates = set([record.get(date_col) for record in records])
     assert len(unique_target_dates) == 1
-    assert len(records) == 1
+    assert len(records) == 48
     fetched_year = int(records[0].get(date_col)[:4])
     assert fetched_year == year
