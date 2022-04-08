@@ -95,8 +95,8 @@ def test_historic_generation_mix():
 @pytest.mark.vcr
 def test_demand_data_update():
     date_col = "SETTLEMENT_DATE"
-    start_date = "2021-10-01"
-    end_date = "2021-10-01"
+    start_date = "2022-03-01"
+    end_date = "2022-03-01"
     client = NgEso("demand-data-update")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
@@ -113,8 +113,8 @@ def test_demand_data_update():
 @pytest.mark.vcr
 def test_demand_data_update_with_filter():
     date_col = "SETTLEMENT_DATE"
-    start_date = "2021-10-01"
-    end_date = "2021-10-01"
+    start_date = "2022-03-01"
+    end_date = "2022-03-01"
     filter_condition = "\"FORECAST_ACTUAL_INDICATOR\" = 'A'"
     client = NgEso("demand-data-update")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
