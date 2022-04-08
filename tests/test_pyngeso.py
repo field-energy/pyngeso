@@ -208,7 +208,7 @@ def test_historic_frequency_data(month: str, year: int):
     ],
 )
 def test_historic_demand_data(year: int):
-    date_col = "SETTLEMENT DATE"
+    date_col = "SETTLEMENT_DATE"
     start_date = datetime.strptime(f"{year}", "%Y").strftime("%Y-%m-%d")
     client = NgEso(f"historic-demand-data-{year}")
     r = client.query(date_col=date_col, start_date=start_date, end_date=start_date)
