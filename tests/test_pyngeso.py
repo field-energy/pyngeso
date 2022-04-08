@@ -185,3 +185,41 @@ def test_historic_frequency_data(month: str, year: int):
     assert len(records) == 1
     fetched_year = int(records[0].get(date_col)[:4])
     assert fetched_year == year
+    
+    
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "year",
+    [
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+    ],
+)
+def test_historic_frequency_data(year: int):
+    date_col = "SETTLEMENT DATE"
+    start_date = datetime.strptime(f"{year}", "%Y").strftime("%Y-%m-%d")
+    client = NgEso(f"historic-demand-data-{year}")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=start_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+    assert len(records) == 1
+    fetched_year = int(records[0].get(date_col)[:4])
+    assert fetched_year == year
