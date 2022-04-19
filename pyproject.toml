@@ -2,7 +2,10 @@
 name = "pyngeso"
 version = "0.2.7"
 description = "Simple python wrapper for the National Grid ESO Portal"
-authors = ["atsangarides <andreas_tsangarides@hotmail.com>"]
+authors = [
+    "atsangarides <andreas_tsangarides@hotmail.com>",
+    "bethrice44 <bethrice44@gmail.com>"
+]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/atsangarides/pyngeso"
