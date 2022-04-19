@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import json
 import csv
@@ -90,6 +90,24 @@ def test_historic_generation_mix():
     assert "DATETIME" in headers_row
     assert "2009-01-01 00:00:00" in first_row
     assert len(headers_row) == len(first_row)
+
+
+@pytest.mark.vcr
+def test_embedded_wind_solar_forecasts():
+    date_col = "SETTLEMENT_DATE"
+    start_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+    end_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+    client = NgEso("embedded-solar-and-wind")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+    assert len(records) == 48
 
 
 @pytest.mark.vcr
