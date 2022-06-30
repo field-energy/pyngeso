@@ -93,6 +93,24 @@ def test_historic_generation_mix():
 
 
 @pytest.mark.vcr
+def test_carbon_intensity_forecast():
+
+    date_col = "datetime"
+    start_date = "2018-04-17"
+    end_date = "2018-04-17"
+    client = NgEso("carbon-intensity-forecast")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+
+
+@pytest.mark.vcr
 def test_embedded_wind_solar_forecasts():
     date_col = "SETTLEMENT_DATE"
     start_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -113,8 +131,8 @@ def test_embedded_wind_solar_forecasts():
 @pytest.mark.vcr
 def test_demand_data_update():
     date_col = "SETTLEMENT_DATE"
-    start_date = "2022-03-01"
-    end_date = "2022-03-01"
+    start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
     client = NgEso("demand-data-update")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
@@ -131,8 +149,8 @@ def test_demand_data_update():
 @pytest.mark.vcr
 def test_demand_data_update_with_filter():
     date_col = "SETTLEMENT_DATE"
-    start_date = "2022-03-01"
-    end_date = "2022-03-01"
+    start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
     filter_condition = "\"FORECAST_ACTUAL_INDICATOR\" = 'A'"
     client = NgEso("demand-data-update")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,

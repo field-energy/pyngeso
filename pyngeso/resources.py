@@ -145,6 +145,10 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "id": "fe2502b8-7fef-4027-8399-550a0c84f415",
         "url": "https://data.nationalgrideso.com/system/system-frequency-data/r/january_2021_-_historic_frequency_data"
     },
+    "carbon-intensity-forecast": {
+        "id": "0e5fde43-2de7-4fb4-833d-c7bca3b658b0",
+        "url": "https://data.nationalgrideso.com/carbon-intensity1/national-carbon-intensity-forecast/r/national_carbon_intensity_forecast"
+    },
 }
 
 file_resource_ids: Dict[str, Dict[str, str]] = {
