@@ -23,11 +23,8 @@ class NgEso:
     Returns:
 
     """
-    def __init__(
-            self,
-            resource: str,
-            backend: Literal['api', 'file'] = "api"
-    ):
+
+    def __init__(self, resource: str, backend: Literal["api", "file"] = "api"):
         self.resource = resource
         self.backend = backend
 
@@ -93,14 +90,16 @@ class NgEso:
         if limit:
             limits_sql = f"limit {limit}"
 
-        sql = " ".join([
-            "select",
-            fields_sql,
-            "from",
-            f'"{self.resource_id}"',
-            date_filter_sql,
-            filter_sql,
-            limits_sql]
+        sql = " ".join(
+            [
+                "select",
+                fields_sql,
+                "from",
+                f'"{self.resource_id}"',
+                date_filter_sql,
+                filter_sql,
+                limits_sql,
+            ]
         )
 
         return sql
@@ -130,7 +129,7 @@ class NgEso:
                 True,
                 True,
             ): f"where \"{date_col}\" BETWEEN '{start_date}'::timestamp "
-               f"and '{end_date}'::timestamp",
+            f"and '{end_date}'::timestamp",
         }
         date_filter_sql = date_range_map.get(dates_provided)
 
