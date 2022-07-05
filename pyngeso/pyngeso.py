@@ -18,7 +18,7 @@ class NgEso:
     A class for fetching data from the National Grid ESO data portal.
 
     Args:
-        resource_id (str): id for the resource when using the ESO API functionality
+        resource (str): name for the resource when using the ESO API functionality
         resource (str): name of the resource when using the ESO API functionality
     Returns:
 
