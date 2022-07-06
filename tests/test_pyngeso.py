@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import logging
 import json
 import csv
@@ -11,8 +11,8 @@ from pyngeso.exceptions import UnsuccessfulRequest
 
 @pytest.mark.vcr
 def test_day_ahead_historic_forecast():
-    start_date = "2018-01-02"
-    end_date = "2018-01-02"
+    start_date = date(2018, 1, 2)
+    end_date = date(2018, 1, 2)
     client = NgEso("historic-day-ahead-demand-forecast")
     r = client.query(date_col="TARGETDATE", start_date=start_date, end_date=end_date)
 
@@ -29,7 +29,7 @@ def test_day_ahead_historic_forecast():
 def test_query_unsuccessful_request(caplog):
     with pytest.raises(UnsuccessfulRequest) as exc_info:
         client = NgEso("historic-day-ahead-demand-forecast")
-        _ = client.query(date_col="no_such_col", end_date="2018-01-02")
+        _ = client.query(date_col="no_such_col", end_date=date(2018, 1, 2))
     assert "status_code=4" in str(exc_info.value)
 
 
@@ -37,14 +37,14 @@ def test_query_unsuccessful_request(caplog):
 def test_day_ahead_historic_forecast_missing_data_warning(caplog):
     with caplog.at_level(logging.WARNING):
         client = NgEso("historic-day-ahead-demand-forecast")
-        _ = client.query(date_col="TARGETDATE", start_date="2050-01-02")
+        _ = client.query(date_col="TARGETDATE", start_date=date(2050, 1, 2))
     assert "No data found" in caplog.text
 
 
 @pytest.mark.vcr
 def test_2day_ahead_historic_forecast():
-    start_date = "2018-03-30"
-    end_date = "2018-03-30"
+    start_date = date(2018, 3, 30)
+    end_date = date(2018, 3, 30)
     client = NgEso("historic-2day-ahead-demand-forecast")
     r = client.query(date_col="TARGETDATE", start_date=start_date, end_date=end_date)
 
@@ -60,8 +60,8 @@ def test_2day_ahead_historic_forecast():
 @pytest.mark.vcr
 def test_historic_day_ahead_wind_forecast():
     date_col = "Date"
-    start_date = "2018-04-17"
-    end_date = "2018-04-17"
+    start_date = date(2018, 4, 17)
+    end_date = date(2018, 4, 17)
     client = NgEso("historic-day-ahead-wind-forecast")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
@@ -96,8 +96,8 @@ def test_historic_generation_mix():
 def test_carbon_intensity_forecast():
 
     date_col = "datetime"
-    start_date = "2018-04-17"
-    end_date = "2018-04-17"
+    start_date = datetime(2018, 1, 1, 0, 0)
+    end_date = datetime(2018, 1, 1, 23, 30)
     client = NgEso("carbon-intensity-forecast")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
@@ -105,16 +105,14 @@ def test_carbon_intensity_forecast():
     r_dict = json.loads(r)
     records = r_dict.get("result").get("records")
     assert isinstance(records, list)
-    assert len(records) > 0
-    unique_target_dates = set([record.get(date_col) for record in records])
-    assert len(unique_target_dates) == 1
+    assert len(records) == 48
 
 
 @pytest.mark.vcr
 def test_embedded_wind_solar_forecasts():
     date_col = "SETTLEMENT_DATE"
-    start_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
-    end_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+    start_date = (datetime.today() + timedelta(days=1)).date()
+    end_date = (datetime.today() + timedelta(days=1)).date()
     client = NgEso("embedded-solar-and-wind")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
@@ -131,8 +129,8 @@ def test_embedded_wind_solar_forecasts():
 @pytest.mark.vcr
 def test_demand_data_update():
     date_col = "SETTLEMENT_DATE"
-    start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-    end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=1)).date()
+    end_date = (datetime.now() - timedelta(days=1)).date()
     client = NgEso("demand-data-update")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
@@ -149,8 +147,8 @@ def test_demand_data_update():
 @pytest.mark.vcr
 def test_demand_data_update_with_filter():
     date_col = "SETTLEMENT_DATE"
-    start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-    end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=1)).date()
+    end_date = (datetime.now() - timedelta(days=1)).date()
     filter_condition = "\"FORECAST_ACTUAL_INDICATOR\" = 'A'"
     client = NgEso("demand-data-update")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
@@ -169,8 +167,8 @@ def test_demand_data_update_with_filter():
 @pytest.mark.vcr
 def test_dc_results_summary():
     date_col = "EFA Date"
-    start_date = "2021-09-16"
-    end_date = "2021-09-16"
+    start_date = date(2021, 9, 16)
+    end_date = date(2021, 9, 16)
     filter_condition = "\"Service\" = 'DCH'"
     client = NgEso("dc-results-summary")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
@@ -207,7 +205,7 @@ def test_dc_results_summary():
 )
 def test_historic_frequency_data(month: str, year: int):
     date_col = "dtm"
-    start_date = datetime.strptime(f"{month} {year}", "%b %Y").strftime("%Y-%m-%d")
+    start_date = datetime.strptime(f"{month} {year}", "%b %Y").date()
     client = NgEso(f"historic-frequency-data-{month}{str(year)[-2:]}")
     r = client.query(date_col=date_col, start_date=start_date, end_date=start_date)
 
@@ -245,7 +243,7 @@ def test_historic_frequency_data(month: str, year: int):
 )
 def test_historic_demand_data(year: int):
     date_col = "SETTLEMENT_DATE"
-    start_date = datetime.strptime(f"{year}", "%Y").strftime("%Y-%m-%d")
+    start_date = datetime.strptime(f"{year}", "%Y").date()
     client = NgEso(f"historic-demand-data-{year}")
     r = client.query(date_col=date_col, start_date=start_date, end_date=start_date)
 

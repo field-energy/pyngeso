@@ -1,8 +1,7 @@
 import logging
-from typing import Optional, List, Literal
-from datetime import datetime
+from typing import Optional, List, Literal, Union
+from datetime import datetime, date
 import json
-import re
 
 import requests
 
@@ -12,13 +11,16 @@ from .exceptions import UnsuccessfulRequest
 
 logger = setup_logger(logging.getLogger("PyNgEso"))
 
+date_fmt = "%Y-%m-%d"
+datetime_fmt = "%Y-%m-%dT%H:%M:%S"
+
 
 class NgEso:
     """
     A class for fetching data from the National Grid ESO data portal.
 
     Args:
-        resource_id (str): id for the resource when using the ESO API functionality
+        resource (str): name for the resource when using the ESO API functionality
         resource (str): name of the resource when using the ESO API functionality
     Returns:
 
@@ -45,8 +47,8 @@ class NgEso:
         self,
         fields: Optional[List[str]] = None,
         date_col: Optional[str] = None,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: Optional[Union[date, datetime]] = None,
+        end_date: Optional[Union[date, datetime]] = None,
         filters: Optional[List[str]] = None,
         limit: Optional[int] = None,
     ) -> bytes:
@@ -66,8 +68,8 @@ class NgEso:
         self,
         fields: Optional[List[str]] = None,
         date_col: Optional[str] = None,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: Optional[Union[date, datetime]] = None,
+        end_date: Optional[Union[date, datetime]] = None,
         filters: Optional[List[str]] = None,
         limit: Optional[int] = None,
     ) -> str:
@@ -107,20 +109,18 @@ class NgEso:
     def construct_date_range(
         self,
         date_col: Optional[str] = None,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: Optional[Union[date, datetime]] = None,
+        end_date: Optional[Union[date, datetime]] = None,
     ) -> str:
-        if start_date:
-            self.validate_date_fmt(start_date)
-        if end_date:
-            self.validate_date_fmt(end_date)
-
         dates_provided = (start_date is not None, end_date is not None)
         # validation of dates
         if not any(dates_provided):
             raise ValueError("At least one of {start_date,end_date} should be provided")
         if all(dates_provided):
             self.validate_date_range(start_date, end_date)
+
+        start_date = self.datetime_to_str(start_date)
+        end_date = self.datetime_to_str(end_date)
 
         date_range_map = {
             (True, False): f"where \"{date_col}\" >= '{start_date}'::timestamp",
@@ -145,19 +145,25 @@ class NgEso:
         return "where " + filters_sql
 
     @staticmethod
-    def validate_date_fmt(date_: str) -> None:
-        reg = r"^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
-        if re.search(reg, date_) is None:
-            raise ValueError(f"date {date_} does not match format '%Y-%m-%d'")
-
-    @staticmethod
-    def validate_date_range(start_date: str, end_date: str) -> None:
-        start_date = datetime.strptime(start_date, "%Y-%m-%d")
-        end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    def validate_date_range(
+            start_date: Union[date, datetime],
+            end_date: Union[date, datetime]
+    ) -> None:
+        assert type(start_date) == type(end_date), \
+            "start_date and end_date should either be both a date or a datetime object"
 
         assert (
             end_date >= start_date
         ), "end_date should be the same of greater than start_date"
+
+    @staticmethod
+    def datetime_to_str(datetime_obj: Optional[Union[date, datetime]]) -> Optional[str]:
+        if datetime_obj:
+            if isinstance(datetime_obj, datetime):
+                return datetime_obj.strftime(datetime_fmt)
+            else:
+                return datetime_obj.strftime(date_fmt)
+        return datetime_obj
 
     def _check_for_errors(self, r: requests.Response) -> None:
         """Inspect the request response and the metadata in xml"""
