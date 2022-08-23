@@ -149,6 +149,10 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "id": "0e5fde43-2de7-4fb4-833d-c7bca3b658b0",
         "url": "https://data.nationalgrideso.com/carbon-intensity1/national-carbon-intensity-forecast/r/national_carbon_intensity_forecast",
     },
+    "transmission-entry-capacity-tec-register": {
+        "id": "17becbab-e3e8-473f-b303-3806f43a6a10",
+        "url": "https://data.nationalgrideso.com/connection-registers/transmission-entry-capacity-tec-register/r/tec_register"
+    }
 }
 
 file_resource_ids: Dict[str, Dict[str, str]] = {

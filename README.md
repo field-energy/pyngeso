@@ -36,6 +36,7 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 * `dc-results-summary`
 * `historic-demand-data-{year}` [2009-2022]
 * `historic-frequency-data` [Jan21-Jan22]
+* `transmission-entry-capacity-tec-register`
 
 ### Download of files
 * `historic-generation-mix`
