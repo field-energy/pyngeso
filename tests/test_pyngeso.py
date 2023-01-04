@@ -88,7 +88,7 @@ def test_historic_generation_mix():
     first_row = next(c)
 
     assert "DATETIME" in headers_row
-    assert "2009-01-01 00:00:00" in first_row
+    assert "2009-01-01 00:00:00+00" in first_row
     assert len(headers_row) == len(first_row)
 
 
@@ -182,6 +182,26 @@ def test_dc_results_summary():
     unique_target_dates = set([record.get(date_col) for record in records])
     assert len(unique_target_dates) == 1
     assert len(records) == 6
+
+
+@pytest.mark.vcr
+def test_dc_volume_forecast():
+    date_col = "Forecast_Target_Date"
+    start_date = date(2022, 5, 21)
+    end_date = date(2022, 5, 21)
+    filter_condition = "\"Service_Type\" = 'DC-L'"
+    client = NgEso("dc-volume-forecast")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
+                     filters=[filter_condition])
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+    assert len(records) == 4
 
 
 @pytest.mark.vcr
