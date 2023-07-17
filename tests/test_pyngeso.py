@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta, date
-import logging
-import json
 import csv
+import json
+import logging
+from datetime import date, datetime, timedelta
 
 import pytest
 
@@ -58,11 +58,44 @@ def test_2day_ahead_historic_forecast():
 
 
 @pytest.mark.vcr
+def test_historic_2_14_days_ahead_historic_forecast():
+    start_date = date(2021, 3, 30)
+    end_date = date(2021, 3, 30)
+    client = NgEso("historic-2-14-days-ahead-demand-forecast")
+    r = client.query(date_col="TARGETDATE", start_date=start_date, end_date=end_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get("TARGETDATE") for record in records])
+    assert len(unique_target_dates) == 1
+
+
+@pytest.mark.vcr
 def test_historic_day_ahead_wind_forecast():
     date_col = "Date"
     start_date = date(2018, 4, 17)
     end_date = date(2018, 4, 17)
     client = NgEso("historic-day-ahead-wind-forecast")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_dates = set([record.get(date_col) for record in records])
+    assert len(unique_target_dates) == 1
+
+
+@pytest.mark.vcr
+def test_14_days_ahead_wind_forecast():
+    date_col = "Datetime"
+    start_date = (datetime.today() + timedelta(days=1)).date()
+    end_date = (datetime.today() + timedelta(days=1)).date()
+    client = NgEso("14-days-ahead-wind-forecast")
     r = client.query(date_col=date_col, start_date=start_date, end_date=end_date)
 
     assert isinstance(r, bytes)
@@ -82,8 +115,8 @@ def test_historic_generation_mix():
     assert isinstance(r, bytes)
 
     # test bytes -> csv
-    decoded_content = r.decode('utf-8')
-    c = csv.reader(decoded_content.splitlines(), delimiter=',')
+    decoded_content = r.decode("utf-8")
+    c = csv.reader(decoded_content.splitlines(), delimiter=",")
     headers_row = next(c)
     first_row = next(c)
 
@@ -151,8 +184,12 @@ def test_demand_data_update_with_filter():
     end_date = (datetime.now() - timedelta(days=1)).date()
     filter_condition = "\"FORECAST_ACTUAL_INDICATOR\" = 'A'"
     client = NgEso("demand-data-update")
-    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
-                     filters=[filter_condition])
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+        filters=[filter_condition],
+    )
 
     assert isinstance(r, bytes)
     r_dict = json.loads(r)
@@ -171,8 +208,12 @@ def test_dc_results_summary():
     end_date = date(2021, 9, 16)
     filter_condition = "\"Service\" = 'DCH'"
     client = NgEso("dc-results-summary")
-    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
-                     filters=[filter_condition])
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+        filters=[filter_condition],
+    )
 
     assert isinstance(r, bytes)
     r_dict = json.loads(r)
@@ -223,6 +264,24 @@ def test_dcmr_block_orders():
 
 
 @pytest.mark.vcr
+def test_dcmr_linear_orders():
+    date_col = "DeliveryStart"
+    start_date = date(2022, 5, 16)
+    end_date = date(2022, 5, 17)
+    client = NgEso("dc-dr-dm-linear-orders")
+    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
+                     filters=[])
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    unique_target_datetimes = set([record.get(date_col) for record in records])
+    assert len(unique_target_datetimes) == 6
+
+
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "month, year",
     [
@@ -257,27 +316,12 @@ def test_historic_frequency_data(month: str, year: int):
     assert len(records) == 1
     fetched_year = int(records[0].get(date_col)[:4])
     assert fetched_year == year
-    
-    
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "year",
-    [
-        2009,
-        2010,
-        2011,
-        2012,
-        2013,
-        2014,
-        2015,
-        2016,
-        2017,
-        2018,
-        2019,
-        2020,
-        2021,
-        2022
-    ],
+    [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
 )
 def test_historic_demand_data(year: int):
     date_col = "SETTLEMENT_DATE"

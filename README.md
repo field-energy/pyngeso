@@ -30,10 +30,13 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 * `day-ahead-demand-forecast`
 * `historic-2day-ahead-demand-forecast`
 * `2day-ahead-demand-forecast`
+* `historic-2-14-days-ahead-demand-forecast`
 * `historic-day-ahead-wind-forecast`
 * `day-ahead-wind-forecast`
+* `14-days-ahead-wind-forecast`
 * `demand-data-update`
 * `dc-results-summary`
+* `dc-dr-dm-linear-orders`
 * `historic-demand-data-{year}` [2009-2022]
 * `historic-frequency-data` [Jan21-Jan22]
 * `transmission-entry-capacity-tec-register`

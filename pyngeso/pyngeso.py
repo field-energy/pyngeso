@@ -1,13 +1,13 @@
-import logging
-from typing import Optional, List, Literal, Union
-from datetime import datetime, date
 import json
+import logging
+from datetime import date, datetime
+from typing import List, Literal, Optional, Union
 
 import requests
 
 from .configure_logging import setup_logger
-from .resources import api_resource_ids, file_resource_ids
 from .exceptions import UnsuccessfulRequest
+from .resources import api_resource_ids, file_resource_ids
 
 logger = setup_logger(logging.getLogger("PyNgEso"))
 
@@ -53,7 +53,7 @@ class NgEso:
         limit: Optional[int] = None,
     ) -> bytes:
 
-        url = f"https://data.nationalgrideso.com/api/3/action/datastore_search_sql"
+        url = "https://data.nationalgrideso.com/api/3/action/datastore_search_sql"
         sql = self.construct_sql(fields, date_col, start_date, end_date, filters, limit)
         params = {"sql": sql}
 
@@ -146,11 +146,11 @@ class NgEso:
 
     @staticmethod
     def validate_date_range(
-            start_date: Union[date, datetime],
-            end_date: Union[date, datetime]
+        start_date: Union[date, datetime], end_date: Union[date, datetime]
     ) -> None:
-        assert type(start_date) == type(end_date), \
-            "start_date and end_date should either be both a date or a datetime object"
+        assert type(start_date) == type(
+            end_date
+        ), "start_date and end_date should either be both a date or a datetime object"
 
         assert (
             end_date >= start_date
