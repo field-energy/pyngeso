@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyngeso"
-version = "0.3.4"
+version = "0.3.5"
 description = "Simple python wrapper for the National Grid ESO Portal"
 authors = [
     "atsangarides <andreas_tsangarides@hotmail.com>",
