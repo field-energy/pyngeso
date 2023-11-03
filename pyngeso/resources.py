@@ -173,6 +173,10 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
         "id": "17becbab-e3e8-473f-b303-3806f43a6a10",
         "url": "https://data.nationalgrideso.com/connection-registers/transmission-entry-capacity-tec-register/r/tec_register",
     },
+    "dx-eac-eso-results-summary": {
+        "id": "596f29ac-0387-4ba4-a6d3-95c243140707",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    }
 }
 
 file_resource_ids: Dict[str, Dict[str, str]] = {
