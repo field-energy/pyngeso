@@ -176,6 +176,14 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
     "dx-eac-eso-results-summary": {
         "id": "596f29ac-0387-4ba4-a6d3-95c243140707",
         "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    },
+    "dx-eac-eso-sell-orders": {
+        "id": "13b511df-d6ec-4143-afb1-0ecc6fd19810",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    },
+    "dx-eac-eso-buy-orders": {
+        "id": "1cf68f59-8eb8-4f1d-bccf-11b5a47b24e5",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
     }
 }
 

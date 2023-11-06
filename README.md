@@ -41,6 +41,9 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 * `historic-frequency-data` [Jan21-Jan22]
 * `transmission-entry-capacity-tec-register`
 * `dx-eac-eso-results-summary`
+* `dx-eac-eso-sell-orders`
+* `dx-eac-eso-buy-orders`
+
 
 ### Download of files
 * `historic-generation-mix`
