@@ -359,3 +359,42 @@ def test_dx_eac_eso_results_summary():
     assert isinstance(records, list)
     assert len(records) > 0
     assert len(records) == 36
+
+
+@pytest.mark.vcr
+def test_dx_eac_eso_sell_orders():
+    date_col = "deliveryStart"
+    start_date = datetime(2023, 11, 2, 23)
+    end_date = datetime(2023, 11, 3, 23)
+    client = NgEso("dx-eac-eso-sell-orders")
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+
+
+@pytest.mark.vcr
+def test_dx_eac_eso_buy_orders():
+    date_col = "deliveryStart"
+    start_date = datetime(2023, 11, 2, 23)
+    end_date = datetime(2023, 11, 3, 23)
+    client = NgEso("dx-eac-eso-buy-orders")
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+    
