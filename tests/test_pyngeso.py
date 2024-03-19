@@ -121,7 +121,7 @@ def test_historic_generation_mix():
     first_row = next(c)
 
     assert "DATETIME" in headers_row
-    assert "2009-01-01 00:00:00" in first_row
+    assert "2009-01-01 00:00:00+00:00" in first_row
     assert len(headers_row) == len(first_row)
 
 
@@ -232,8 +232,12 @@ def test_dc_volume_forecast():
     end_date = date(2022, 5, 21)
     filter_condition = "\"Service_Type\" = 'DC-L'"
     client = NgEso("dc-volume-forecast")
-    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
-                     filters=[filter_condition])
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+        filters=[filter_condition],
+    )
 
     assert isinstance(r, bytes)
     r_dict = json.loads(r)
@@ -251,8 +255,9 @@ def test_dcmr_block_orders():
     start_date = date(2022, 5, 16)
     end_date = date(2022, 5, 17)
     client = NgEso("dc-dr-dm-block-orders")
-    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
-                     filters=[])
+    r = client.query(
+        date_col=date_col, start_date=start_date, end_date=end_date, filters=[]
+    )
 
     assert isinstance(r, bytes)
     r_dict = json.loads(r)
@@ -269,8 +274,9 @@ def test_dcmr_linear_orders():
     start_date = date(2022, 5, 16)
     end_date = date(2022, 5, 17)
     client = NgEso("dc-dr-dm-linear-orders")
-    r = client.query(date_col=date_col, start_date=start_date, end_date=end_date,
-                     filters=[])
+    r = client.query(
+        date_col=date_col, start_date=start_date, end_date=end_date, filters=[]
+    )
 
     assert isinstance(r, bytes)
     r_dict = json.loads(r)
@@ -356,9 +362,12 @@ def test_dx_eac_eso_results_summary():
     assert isinstance(r, bytes)
     r_dict = json.loads(r)
     records = r_dict.get("result").get("records")
+
+    for r in records:
+        print(r)
     assert isinstance(records, list)
     assert len(records) > 0
-    assert len(records) == 36
+    assert len(records) == 42
 
 
 @pytest.mark.vcr
@@ -381,11 +390,11 @@ def test_dx_eac_eso_sell_orders():
 
 
 @pytest.mark.vcr
-def test_dx_eac_eso_buy_orders():
+def test_br_eac_eso_results_summary():
     date_col = "deliveryStart"
-    start_date = datetime(2023, 11, 2, 23)
-    end_date = datetime(2023, 11, 3, 23)
-    client = NgEso("dx-eac-eso-buy-orders")
+    start_date = datetime(2024, 3, 14, 23)
+    end_date = datetime(2024, 3, 15, 23)
+    client = NgEso("br-eac-eso-results-summary")
     r = client.query(
         date_col=date_col,
         start_date=start_date,
@@ -397,4 +406,61 @@ def test_dx_eac_eso_buy_orders():
     records = r_dict.get("result").get("records")
     assert isinstance(records, list)
     assert len(records) > 0
-    
+    assert len(records) == 98
+
+
+@pytest.mark.vcr
+def test_br_eac_eso_sell_orders():
+    date_col = "deliveryStart"
+    start_date = datetime(2024, 3, 14, 23)
+    end_date = datetime(2024, 3, 15, 23)
+    client = NgEso("br-eac-eso-sell-orders")
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+
+
+@pytest.mark.vcr
+def test_br_eac_eso_buy_orders():
+    date_col = "deliveryStart"
+    start_date = datetime(2024, 3, 14, 23)
+    end_date = datetime(2024, 3, 15, 23)
+    client = NgEso("br-eac-eso-buy-orders")
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
+
+
+@pytest.mark.vcr
+def test_br_eac_eso_results_by_units():
+    date_col = "deliveryStart"
+    start_date = datetime(2024, 3, 14, 23)
+    end_date = datetime(2024, 3, 15, 23)
+    client = NgEso("br-eac-eso-results-by-units")
+    r = client.query(
+        date_col=date_col,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    assert isinstance(r, bytes)
+    r_dict = json.loads(r)
+    records = r_dict.get("result").get("records")
+    assert isinstance(records, list)
+    assert len(records) > 0
