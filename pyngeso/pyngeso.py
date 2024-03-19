@@ -148,7 +148,7 @@ class NgEso:
     def validate_date_range(
         start_date: Union[date, datetime], end_date: Union[date, datetime]
     ) -> None:
-        assert type(start_date) == type(
+        assert type(start_date) == type(  # noqa: E721
             end_date
         ), "start_date and end_date should either be both a date or a datetime object"
 

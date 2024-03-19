@@ -184,7 +184,23 @@ api_resource_ids: Dict[str, Dict[str, str]] = {
     "dx-eac-eso-buy-orders": {
         "id": "1cf68f59-8eb8-4f1d-bccf-11b5a47b24e5",
         "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
-    }
+    },
+    "br-eac-eso-results-summary": {
+        "id": "1b3f2ee1-74a0-4939-a5a3-f01f19e663e4",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    },
+    "br-eac-eso-sell-orders": {
+        "id": "3f53c38b-d287-41af-b4c8-769abb6e707a",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    },
+    "br-eac-eso-buy-orders": {
+        "id": "8a549d29-52cd-4016-a04e-c01a3e31bd3a",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    },
+    "br-eac-eso-results-by-units": {
+        "id": "5d8e47be-e262-4398-89b0-6f93f636faf6",
+        "url": "https://api.nationalgrideso.com/api/3/action/datastore_search",
+    },
 }
 
 file_resource_ids: Dict[str, Dict[str, str]] = {
