@@ -43,6 +43,10 @@ r: bytes = client.query(date_col=date_col, start_date=start_date, end_date=end_d
 * `dx-eac-eso-results-summary`
 * `dx-eac-eso-sell-orders`
 * `dx-eac-eso-buy-orders`
+* `br-eac-eso-results-summary`
+* `br-eac-eso-sell-orders`
+* `br-eac-eso-buy-orders`
+* `br-eac-eso-results-by-units`
 
 
 ### Download of files
