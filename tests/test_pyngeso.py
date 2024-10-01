@@ -120,9 +120,6 @@ def test_historic_generation_mix():
     headers_row = next(c)
     first_row = next(c)
 
-    print(headers_row)
-    print(first_row)
-
     assert "DATETIME" in headers_row
     assert "2009-01-01 00:00:00+00" in first_row
     assert len(headers_row) == len(first_row)
@@ -130,7 +127,6 @@ def test_historic_generation_mix():
 
 @pytest.mark.vcr
 def test_carbon_intensity_forecast():
-
     date_col = "datetime"
     start_date = datetime(2018, 1, 1, 0, 0)
     end_date = datetime(2018, 1, 1, 23, 30)
@@ -352,7 +348,6 @@ def test_historic_demand_data(year: int):
 
 @pytest.mark.vcr
 def test_dx_eac_eso_results_summary():
-
     date_col = "deliveryStart"
     start_date = datetime(2023, 11, 2, 23)
     end_date = datetime(2023, 11, 3, 23)
