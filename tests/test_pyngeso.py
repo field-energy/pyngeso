@@ -43,8 +43,8 @@ def test_day_ahead_historic_forecast_missing_data_warning(caplog):
 
 @pytest.mark.vcr
 def test_2day_ahead_historic_forecast():
-    start_date = date(2018, 3, 30)
-    end_date = date(2018, 3, 30)
+    start_date = date(2024, 3, 30)
+    end_date = date(2024, 3, 30)
     client = NgEso("historic-2day-ahead-demand-forecast")
     r = client.query(date_col="TARGETDATE", start_date=start_date, end_date=end_date)
 
@@ -120,8 +120,11 @@ def test_historic_generation_mix():
     headers_row = next(c)
     first_row = next(c)
 
+    print(headers_row)
+    print(first_row)
+
     assert "DATETIME" in headers_row
-    assert "2009-01-01 00:00:00+00:00" in first_row
+    assert "2009-01-01 00:00:00+00" in first_row
     assert len(headers_row) == len(first_row)
 
 
@@ -349,6 +352,7 @@ def test_historic_demand_data(year: int):
 
 @pytest.mark.vcr
 def test_dx_eac_eso_results_summary():
+
     date_col = "deliveryStart"
     start_date = datetime(2023, 11, 2, 23)
     end_date = datetime(2023, 11, 3, 23)

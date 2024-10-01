@@ -53,7 +53,7 @@ class NgEso:
         limit: Optional[int] = None,
     ) -> bytes:
 
-        url = "https://data.nationalgrideso.com/api/3/action/datastore_search_sql"
+        url = "https://api.neso.energy/api/3/action/datastore_search_sql"
         sql = self.construct_sql(fields, date_col, start_date, end_date, filters, limit)
         params = {"sql": sql}
 
